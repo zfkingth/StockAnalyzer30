@@ -22,7 +22,7 @@ export default class tempcontrol extends React.PureComponent {
   render() {
     return (
       <MulRowsWrap>
-        <p>页客户端程序版本:1.2.7</p>
+        <p>页客户端程序版本:3.0.0</p>
           <ServerVersionInfo/>
           <DateInfo/>
       </MulRowsWrap >
