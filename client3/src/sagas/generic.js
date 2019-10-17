@@ -25,6 +25,15 @@ const enters = {
 
 }
 
+
+const NotificationEnum=
+{
+   TaskStart:0,
+   TaskProgress:1,
+   TaskFail:2,
+   TaskSuccess:3,
+}
+
 export function* enterPage() {
   const state = yield select()
   const pageName = state.navigation.page
@@ -77,23 +86,23 @@ function* listenNotifications() {
       // }
       console.log('receive notification:' + notificationType);
       console.log('receive payload:' + JSON.stringify(payload));
-      if (notificationType === 'TaskStart') {
+      if (notificationType ===  NotificationEnum.TaskStart ) {
 
         yield put(stockActions.TaskStart(payload));
       }
 
-      else if (notificationType === 'TaskSuccess') {
+      else if (notificationType === NotificationEnum.TaskSuccess) {
 
 
         yield put(stockActions.TaskSuccess(payload));
       }
 
-      else if (notificationType === 'TaskProgress') {
+      else if (notificationType ===  NotificationEnum.TaskProgress ) {
 
 
         yield put(stockActions.TaskProgress(payload));
       }
-      else if (notificationType === 'TaskFail') {
+      else if (notificationType ===  NotificationEnum.TaskFail ) {
 
         yield put(stockActions.TaskFail(payload));
       }

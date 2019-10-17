@@ -67,7 +67,7 @@ class TextFields extends React.PureComponent {
     };
 
     handleChange = name => event => {
-        this.setState({ [name]: event.target.value });
+        this.setState({ [name]: parseFloat(event.target.value) });
     };
     switchChange = name => event => {
         this.setState({ [name]: event.target.checked });
