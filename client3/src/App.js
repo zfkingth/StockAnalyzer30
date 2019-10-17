@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { Provider } from 'react-redux'
 
-function App() {
+import './utils/array-extensions'
+
+import store from './store'
+import saga from './sagas/'
+import {watchAndLog } from './sagas/'
+import Root from './layouts/main'
+import { sagaMiddleware } from './middleware'
+
+import { receiveMockState } from './actions/mock'
+
+import { loggedIn } from './utils/auth'
+import { startApp } from './actions/generic'
+
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Provider store={store}>
+      <Root />
+    </Provider>
+  )
 }
 
-export default App;
+export default App
+
+sagaMiddleware.run(saga)
+sagaMiddleware.run(watchAndLog)
+
+loggedIn() && store.dispatch(startApp())
+
+if (process.env.REACT_APP_MOCK) {
+  import('./mocks/state.js').then(module => {
+    const state = store.getState()
+    store.dispatch(
+      receiveMockState(
+        Object.entries(state).reduce(
+          (acc, [key, value]) => ({
+            ...acc,
+            [key]: { ...value, ...module.MOCK_STATE[key] }
+          }),
+          {}
+        )
+      )
+    )
+  })
+}
