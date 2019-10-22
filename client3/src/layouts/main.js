@@ -18,6 +18,13 @@ const Layout = styled.div`
   flex-direction: column;
   align-items: stretch;
 `
+const BeianDiv = styled.div`
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
 
 class MainLayout extends React.Component {
   render() {
@@ -32,6 +39,9 @@ class MainLayout extends React.Component {
           <NavMenu />
         }
         <Page></Page>
+        <BeianDiv>
+          <p>蜀ICP备19018884号 Copyright © 2019 Zhang Feng All Rights Reserved</p>
+        </BeianDiv>
       </Layout>
     )
   }
@@ -41,7 +51,7 @@ class MainLayout extends React.Component {
   componentDidMount() {
     const {
       //  moveMouse, 
-       changePageSize } = this.props
+      changePageSize } = this.props
     window.addEventListener('popstate', this.popstate)
     window.addEventListener('resize', () =>
       changePageSize({ width: window.innerWidth, height: window.innerHeight })
