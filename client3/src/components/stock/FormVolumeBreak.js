@@ -171,7 +171,7 @@ class TextFields extends React.PureComponent {
                     variant="outlined"
                 />
                 <TextField required
-                    label="并且单日涨幅低于__%。"
+                    label="并且单日涨幅不低于__%。"
                     value={this.state.zhangFu}
                     onChange={this.handleChange('zhangFu')}
                     type="number"
