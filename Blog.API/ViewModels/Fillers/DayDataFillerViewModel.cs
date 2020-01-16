@@ -34,7 +34,7 @@ namespace Blog.API.ViewModels.Fillers
         async Task DayDataFiller_stockHandle(BaseDoWorkViewModel.StockArgs e)
         {
 
-            System.Diagnostics.Debug.Write($"pull daily data : {e.StockId}");
+            System.Diagnostics.Debug.WriteLine($"******************pull daily data : {e.StockId}***************************");
             await FillStockDataFormNetEase(e.StockId, _startDate);
 
 
@@ -126,6 +126,9 @@ namespace Blog.API.ViewModels.Fillers
                                 {
 
                                     item = new DayData();
+                                    item.StockId = stockId;
+                                    item.Date = date;
+
                                     //插入新的数据
                                     db.DayDataSet.Add(item);
                                 }
@@ -137,6 +140,7 @@ namespace Blog.API.ViewModels.Fillers
                                 {
                                     //已经有完整的历史数据
                                     //不能插入或者更新这个数据
+                                    //有可能更新从page得到的数据
                                     item = null;
                                 }
                             }
@@ -144,9 +148,7 @@ namespace Blog.API.ViewModels.Fillers
                             //不能重复
                             if (item != null)
                             {
-                                item.StockId = stockId;
-                                item.Date = date;
-
+                            
                                 setField(item, words);
                                 if (item.ZhangDieFu != null)//停牌产生的空数据，有数据源导致
                                 {

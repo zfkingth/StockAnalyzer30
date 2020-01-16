@@ -77,6 +77,58 @@ namespace Blog.API.ViewModels.Fillers
 
         }
 
+        /// <summary>
+        /// 获取科创板代码
+        /// </summary>
+        /// <returns></returns>
+        public async Task pullShanghaiKCB()
+        {
+
+
+            var handler = new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip
+                                         | DecompressionMethods.Deflate
+            };
+            using (var client = new HttpClient(handler))
+            {
+                Stream val = null;
+                client.BaseAddress = new Uri("http://query.sse.com.cn/security/stock/downloadStockListFile.do?csrcCode=&stockCode=&areaName=&stockType=8");
+
+
+                client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+                client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", " Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36");
+                client.DefaultRequestHeaders.TryAddWithoutValidation("Referer", "http://www.sse.com.cn/assortment/stock/list/share/");
+                client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Encoding", "gzip, deflate");
+                client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Language", "zh-CN,zh;q=0.8");
+
+
+
+                HttpResponseMessage response = await client.GetAsync("");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    val = await response.Content.ReadAsStreamAsync();
+
+
+                }
+                else
+                {
+                    throw new Exception($"从上海证券交易所获取股票代码 通讯错误");
+                }
+
+
+
+                ReturnInfo ro = deserializeShanghai(val);
+
+                WriteToNamesDbParalle(ro);
+
+
+
+            }
+
+        }
+
         public async Task pullShenzhen()
         {
             //从深圳获取股票
@@ -135,6 +187,8 @@ namespace Blog.API.ViewModels.Fillers
 
             await pullShenzhen();
             await pullShanghai();
+
+            await pullShanghaiKCB();
 
             await setFinishedDate();
 
@@ -287,6 +341,7 @@ namespace Blog.API.ViewModels.Fillers
                             case "60":
                             case "30":
                             case "00":
+                            case "68":
 
                                 ro.items.Add(si);
                                 break;

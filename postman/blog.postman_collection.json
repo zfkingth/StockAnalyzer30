@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d1deebcf-e7bc-4c50-9e1a-5f3195c5400f",
+		"_postman_id": "e3e28808-25b6-4cc0-a0d2-cef472543e20",
 		"name": "blog",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -100,6 +100,133 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "send pull all stock names request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"stockIdList\": [\n        \"aaaa\",\n        \"bbbb\"\n    ],\n    \"gapPercent\": 1,\n    \"lowToGapPercent\": 2,\n    \"limitPercent\": 7,\n    \"nearDaysNum\": 2,\n    \"searchFromAllStocks\": false,\n    \"baseDate\": \"9999-12-31T23:59:59.9999999\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/search/UpwardGap",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"search",
+						"UpwardGap"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "send pull F10 request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"stockIdList\": [\n        \"aaaa\",\n        \"bbbb\"\n    ],\n    \"gapPercent\": 1,\n    \"lowToGapPercent\": 2,\n    \"limitPercent\": 7,\n    \"nearDaysNum\": 2,\n    \"searchFromAllStocks\": false,\n    \"baseDate\": \"9999-12-31T23:59:59.9999999\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:49713/api/tasks/pullF10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49713",
+					"path": [
+						"api",
+						"tasks",
+						"pullF10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "send pull day data request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"stockIdList\": [\n        \"aaaa\",\n        \"bbbb\"\n    ],\n    \"gapPercent\": 1,\n    \"lowToGapPercent\": 2,\n    \"limitPercent\": 7,\n    \"nearDaysNum\": 2,\n    \"searchFromAllStocks\": false,\n    \"baseDate\": \"9999-12-31T23:59:59.9999999\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:49713/api/tasks/pullDayData",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49713",
+					"path": [
+						"api",
+						"tasks",
+						"pullDayData"
+					]
+				}
+			},
+			"response": []
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
