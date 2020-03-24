@@ -70,7 +70,7 @@ namespace BackgroundTasksSample.Services
             _util.JudgePullStockNames();
             _util.JudgePullF10();
             _util.JudgePullDailyData();
-            Task.Run(async () => await _util.JudgeEraseRealTimeData());
+            _util.JudgeEraseRealTimeData().Wait();
 
 
         }
@@ -80,7 +80,7 @@ namespace BackgroundTasksSample.Services
         {
             _logger.LogInformation("Timed Background Service is working. for timer2");
 
-            Task.Run(async () => await _util.JudgePullRealTimeDataAsync());
+            _util.JudgePullRealTimeDataAsync().Wait();
         }
 
 

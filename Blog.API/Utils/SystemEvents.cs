@@ -10,7 +10,7 @@ namespace Blog.API.Utils
         public const string PullStockNames = "pullStockNames";
         public const string PullF10 = "pullF10";
         public const string PullDailyData = "pullDaily";
-        public const string PullReadTimeData = "pullRealTime";
+        public const string PullRealTimeData = "pullRealTime";
         public const string PulMarginData = "pullmargin";
 
     }

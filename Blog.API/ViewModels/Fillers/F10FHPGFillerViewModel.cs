@@ -47,49 +47,16 @@ namespace Blog.API.ViewModels.Fillers
         /// </summary>
         public async Task PullAll()
         {
-            await setStartDate();
+            await setStartDate(SystemEvents.PullF10);
             System.Diagnostics.Debug.WriteLine(" filling all F10 FHPG");
             base.DoWork();
-            await setFinishedDate();
+            await setFinishedDate(SystemEvents.PullF10);
 
 
         }
 
 
-        private async Task setStartDate()
-        {
-            using (var scope = _serviceScopeFactory.CreateScope())
-            {
-                var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<BlogContext>();
-
-                var record = db.StockEvents.First(s => s.EventName == Utils.Constants.EventPullF10);
-
-                record.LastAriseStartDate = DateTime.Now;
-                record.Status = EventStatusEnum.Running;
-                await db.SaveChangesAsync();
-
-            }
-        }
-
-        private async Task setFinishedDate()
-        {
-            using (var scope = _serviceScopeFactory.CreateScope())
-            {
-                var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<BlogContext>();
-
-                var record = db.StockEvents.First(s => s.EventName == Utils.Constants.EventPullF10);
-
-                record.LastAriseEndDate = DateTime.Now;
-                record.Status = EventStatusEnum.Idle;
-                await db.SaveChangesAsync();
-
-            }
-
-        }
-
-
+         
         private static readonly Lazy<HttpClient> lazyForF10 =
         new Lazy<HttpClient>(
             () =>

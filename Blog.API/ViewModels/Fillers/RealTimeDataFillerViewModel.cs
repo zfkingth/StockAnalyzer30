@@ -49,44 +49,12 @@ namespace Blog.API.ViewModels.Fillers
         }
 
 
-        private async Task setStartDate()
-        {
-            using (var scope = _serviceScopeFactory.CreateScope())
-            {
-                var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<BlogContext>();
-
-                var record = db.StockEvents.First(s => s.EventName == Utils.Constants.EventPullReadTimeData);
-
-                record.LastAriseStartDate = DateTime.Now;
-                record.Status = EventStatusEnum.Running;
-                await db.SaveChangesAsync();
-
-            }
-        }
-
-        private async Task setFinishedDate()
-        {
-            using (var scope = _serviceScopeFactory.CreateScope())
-            {
-                var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<BlogContext>();
-
-                var record = db.StockEvents.First(s => s.EventName == Utils.Constants.EventPullReadTimeData);
-
-                record.LastAriseEndDate = DateTime.Now;
-                record.Status = EventStatusEnum.Idle;
-                await db.SaveChangesAsync();
-
-            }
-
-        }
-        /// <summary>
+             /// <summary>
         /// 以并发的形式获取实时数据，并且每个请求获取100支股票的实时数据
         /// </summary>
         public async Task PullAll()
         {
-            await setStartDate();
+            await setStartDate(SystemEvents.PullRealTimeData);
 
             using (var scope = _serviceScopeFactory.CreateScope())
             {
@@ -149,7 +117,7 @@ namespace Blog.API.ViewModels.Fillers
 
             }
 
-            await setFinishedDate();
+            await setFinishedDate(SystemEvents.PullRealTimeData);
         }
 
         private int processList(List<string> item, int progressCnt, int cnt, ParallelOptions po)

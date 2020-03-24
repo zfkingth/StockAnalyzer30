@@ -1,4 +1,5 @@
-﻿using Blog.Data;
+﻿using Blog.API.Utils;
+using Blog.Data;
 using Blog.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -183,50 +184,18 @@ namespace Blog.API.ViewModels.Fillers
         }
         public async Task PullAll()
         {
-            await setStartDate();
+            await setStartDate(SystemEvents.PullStockNames);
 
             await pullShenzhen();
             await pullShanghai();
 
             await pullShanghaiKCB();
 
-            await setFinishedDate();
+            await setFinishedDate(SystemEvents.PullStockNames);
 
         }
 
-        private async Task setStartDate()
-        {
-            using (var scope = _serviceScopeFactory.CreateScope())
-            {
-                var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<BlogContext>();
-
-                var record = db.StockEvents.First(s => s.EventName == Utils.Constants.EventPullStockNames);
-
-                record.LastAriseStartDate = DateTime.Now;
-                record.Status = EventStatusEnum.Running;
-                await db.SaveChangesAsync();
-
-            }
-        }
-
-        private async Task setFinishedDate()
-        {
-            using (var scope = _serviceScopeFactory.CreateScope())
-            {
-                var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<BlogContext>();
-
-                var record = db.StockEvents.First(s => s.EventName == Utils.Constants.EventPullStockNames);
-
-                record.LastAriseEndDate = DateTime.Now;
-                record.Status = EventStatusEnum.Idle;
-                await db.SaveChangesAsync();
-
-            }
-        }
-
-        private ReturnInfo deserializeShenzhen(Stream stream)
+            private ReturnInfo deserializeShenzhen(Stream stream)
         {
             ReturnInfo ro = new ReturnInfo();
 

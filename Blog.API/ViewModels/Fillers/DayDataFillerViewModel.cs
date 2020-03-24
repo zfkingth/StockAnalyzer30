@@ -185,7 +185,7 @@ namespace Blog.API.ViewModels.Fillers
         /// <returns></returns>
         public async Task PullAll(int lastYear)
         {
-            await setStartDate();
+            await setStartDate(SystemEvents.PullDailyData);
             _lastTradeDay = await GetLastTradeDayFromWebPage();
             System.Diagnostics.Debug.WriteLine("Filling all day data");
 
@@ -195,7 +195,7 @@ namespace Blog.API.ViewModels.Fillers
             base.DoWork();
 
 
-            await setFinishedDate();
+            await setFinishedDate(SystemEvents.PullDailyData);
 
         }
 
@@ -238,39 +238,7 @@ namespace Blog.API.ViewModels.Fillers
             return tempDate;
         }
 
-        private async Task setStartDate()
-        {
-            using (var scope = _serviceScopeFactory.CreateScope())
-            {
-                var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<BlogContext>();
-
-                var record = db.StockEvents.First(s => s.EventName == Utils.Constants.EventPullDailyData);
-
-                record.LastAriseStartDate = DateTime.Now;
-                record.Status = EventStatusEnum.Running;
-                await db.SaveChangesAsync();
-
-            }
-        }
-
-        private async Task setFinishedDate()
-        {
-            using (var scope = _serviceScopeFactory.CreateScope())
-            {
-                var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<BlogContext>();
-
-                var record = db.StockEvents.First(s => s.EventName == Utils.Constants.EventPullDailyData);
-
-                record.LastAriseEndDate = DateTime.Now;
-                record.Status = EventStatusEnum.Idle;
-                await db.SaveChangesAsync();
-
-            }
-        }
-
-
+        
         /// <summary>
         /// 从网易获取历史数据
         /// </summary>

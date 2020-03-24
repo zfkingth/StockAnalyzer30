@@ -203,6 +203,40 @@ namespace Blog.API.ViewModels.Fillers
 
         }
 
+
+        protected async Task setStartDate(string eventName)
+        {
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var scopedServices = scope.ServiceProvider;
+                var db = scopedServices.GetRequiredService<BlogContext>();
+
+                var record = await db.StockEvents.FirstOrDefaultAsync(s => s.EventName == eventName);
+
+                record.LastAriseStartDate = DateTime.Now;
+                record.Status = EventStatusEnum.Running;
+                await db.SaveChangesAsync();
+
+            }
+        }
+
+        protected async Task setFinishedDate(string eventName)
+        {
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var scopedServices = scope.ServiceProvider;
+                var db = scopedServices.GetRequiredService<BlogContext>();
+
+                var record = await db.StockEvents.FirstOrDefaultAsync(s => s.EventName == eventName);
+
+                record.LastAriseEndDate = DateTime.Now;
+                record.Status = EventStatusEnum.Idle;
+                await db.SaveChangesAsync();
+
+            }
+        }
+
+
         #region get data from net ease
 
         private static readonly Lazy<HttpClient> lazy =
