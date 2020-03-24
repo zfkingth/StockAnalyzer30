@@ -151,8 +151,8 @@ namespace Blog.Data
 
         public async Task TruncateRealTimeAndCacheTable()
         {
-            await this.Database.ExecuteSqlCommandAsync("truncate table RealTimeDataSet");
-            await this.Database.ExecuteSqlCommandAsync("truncate table SearchResultSet");
+            await this.Database.ExecuteSqlRawAsync("truncate table RealTimeDataSet");
+            await this.Database.ExecuteSqlRawAsync("truncate table SearchResultSet");
 
         }
     }
