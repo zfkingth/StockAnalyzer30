@@ -37,29 +37,10 @@ namespace Blog.API.Utils
                 var scopedServices = scope.ServiceProvider;
                 var db = scopedServices.GetRequiredService<BlogContext>();
 
-
-                if (!db.StockEvents.Any())
+                List<string> result = typeof(SystemEvents).GetAllPublicConstantValues<string>();
+                foreach (var eventName in result)
                 {
-                    // Add range of products
-                    StockEvent se = new StockEvent();
-                    se.EventName = Constants.EventPullStockNames;
-                    se.LastAriseStartDate = DateTime.MinValue;
-                    db.StockEvents.Add(se);
-
-                    se = new StockEvent();
-                    se.EventName = Constants.EventPullF10;
-                    se.LastAriseStartDate = DateTime.MinValue;
-                    db.StockEvents.Add(se);
-
-                    se = new StockEvent();
-                    se.EventName = Constants.EventPullDailyData;
-                    se.LastAriseStartDate = DateTime.MinValue;
-                    db.StockEvents.Add(se);
-
-                    se = new StockEvent();
-                    se.EventName = Constants.EventPullReadTimeData;
-                    se.LastAriseStartDate = DateTime.MinValue;
-                    db.StockEvents.Add(se);
+                    addEventRecord(db, eventName);
                 }
 
                 db.SaveChanges();
@@ -77,6 +58,22 @@ namespace Blog.API.Utils
                 }
             }
         }
+
+        static void addEventRecord(BlogContext db, string eventName)
+        {
+
+            var exist = db.StockEvents.Any(s => s.EventName == eventName);
+            if (!exist)
+            {
+                StockEvent se = new StockEvent();
+                se.EventName = eventName;
+                se.LastAriseStartDate = DateTime.MinValue;
+                db.StockEvents.Add(se);
+
+            }
+        }
+
+
 
         /// <summary>
         /// 清除数据获取事件的所有标志，以便程序在重启后，执行把所有数据重新fetch一遍的操作。

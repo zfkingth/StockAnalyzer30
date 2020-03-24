@@ -182,10 +182,7 @@ namespace Blog.API.ViewModels.Fillers
                     Parallel.ForEach(list, po, (stockId) =>
                    {
                        po.CancellationToken.ThrowIfCancellationRequested();
-                       using (var asyncBridge = AsyncHelper.Wait)
-                       {
-                           asyncBridge.Run(stockHandle(new StockArgs() { StockId = stockId }));
-                       }
+                       stockHandle(new StockArgs() { StockId = stockId }).Wait();
 
                        Interlocked.Increment(ref progressCnt);
                        //增加1%才更新
@@ -620,10 +617,7 @@ namespace Blog.API.ViewModels.Fillers
                 po.CancellationToken.ThrowIfCancellationRequested();
 
                 RealTimeData real = null;
-                using (var asyncBridge = AsyncHelper.Wait)
-                {
-                    asyncBridge.Run(handle(item), (callArg) => real = callArg);
-                }
+                real = handle(item).Result;
 
                 Interlocked.Increment(ref _progressedCnt);
 
