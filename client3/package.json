@@ -14,7 +14,7 @@
     "@material-ui/icons": "^4.5.1",
     "@types/styled-components": "^4.1.19",
     "immutable": "^4.0.0-rc.12",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "luxon": "^1.19.3",
     "react": "^16.10.2",
     "react-document-title": "^2.0.3",
