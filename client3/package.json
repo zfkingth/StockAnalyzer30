@@ -15,7 +15,7 @@
     "@types/styled-components": "^4.1.19",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.15",
-    "luxon": "^1.19.3",
+    "luxon": "^1.28.1",
     "react": "^16.10.2",
     "react-document-title": "^2.0.3",
     "react-dom": "^16.10.2",
